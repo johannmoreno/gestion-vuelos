@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gestion-vuelos
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/gestion_vuelos?useSSL=false&serverTimezone=America/Bogota&allowPublicKeyRetrieval=true
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+
+  thymeleaf:
+    cache: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:tu_correo@gmail.com}
+    password: ${MAIL_PASSWORD:tu_clave_de_aplicacion}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  mail:
+    remitente: ${MAIL_USERNAME:tu_correo@gmail.com}
+    habilitado: false
+  admin:
+    nombre: admin
+    clave: Admin12345
+    email: admin@gestionvuelos.com
