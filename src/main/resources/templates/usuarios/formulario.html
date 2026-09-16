@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/comunes :: cabecera(${modoEdicion} ? 'Editar usuario' : 'Crear usuario')}"></head>
+<body>
+<header th:replace="~{fragments/comunes :: banda('usuarios')}"></header>
+
+<main class="contenido">
+    <h1 th:text="${modoEdicion} ? 'Editar usuario' : 'Crear usuario'">Crear usuario</h1>
+    <p class="subtitulo">Completa los datos del usuario.</p>
+
+    <form class="formulario" th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="rejilla">
+            <div class="campo">
+                <label for="nombre">Nombre de usuario</label>
+                <input type="text" id="nombre" th:field="*{nombre}" placeholder="jperez">
+                <span class="error-campo" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="email">Correo electronico</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="jperez@correo.com">
+                <span class="error-campo" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="rol">Rol</label>
+                <select id="rol" th:field="*{rol}">
+                    <option th:each="r : ${roles}" th:value="${r}" th:text="${r.etiqueta}">Rol</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>
+                    <input type="checkbox" th:field="*{activo}" style="width:auto;display:inline-block;margin-right:6px">
+                    Usuario activo
+                </label>
+            </div>
+
+            <div class="campo ancho">
+                <label for="claveNueva" th:text="${modoEdicion} ? 'Nueva clave (dejar vacio para conservar la actual)' : 'Clave'">Clave</label>
+                <input type="password" id="claveNueva" name="claveNueva" minlength="8"
+                       th:placeholder="${modoEdicion} ? 'Minimo 8 caracteres' : 'Minimo 8 caracteres'">
+                <span class="error-campo" th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}"></span>
+                <span class="ayuda" th:if="${modoEdicion}">Solo se actualiza si escribes algo en este campo.</span>
+            </div>
+        </div>
+
+        <div class="pie-formulario">
+            <button class="boton" type="submit">Guardar</button>
+            <a class="boton secundario" th:href="@{/usuarios}">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

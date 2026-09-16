@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/comunes :: cabecera('Usuarios')}"></head>
+<body>
+<header th:replace="~{fragments/comunes :: banda('usuarios')}"></header>
+
+<main class="contenido">
+    <div class="encabezado-seccion">
+        <div>
+            <h1>Usuarios</h1>
+            <p class="subtitulo">Administra las cuentas que pueden acceder al sistema.</p>
+        </div>
+        <a class="boton" th:href="@{/usuarios/nuevo}">+ Crear usuario</a>
+    </div>
+
+    <div th:replace="~{fragments/comunes :: mensajes}"></div>
+
+    <div class="tabla-marco" th:if="${not #lists.isEmpty(usuarios)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td class="dato" th:text="${usuario.nombre}">nombre</td>
+                <td th:text="${usuario.email}">correo@ejemplo.com</td>
+                <td><span class="estado" th:text="${usuario.rol.etiqueta}">Rol</span></td>
+                <td>
+                    <span th:if="${usuario.activo}" style="color:#2F7D53">Activo</span>
+                    <span th:unless="${usuario.activo}" style="color:#B8423A">Inactivo</span>
+                </td>
+                <td class="acciones">
+                    <a class="boton pequeno secundario" th:href="@{/usuarios/{id}/editar(id=${usuario.id})}">Editar</a>
+                    <form th:action="@{/usuarios/{id}/eliminar(id=${usuario.id})}" method="post"
+                          onsubmit="return confirm('¿Eliminar este usuario? Esta accion no se puede deshacer.');">
+                        <button class="boton pequeno peligro" type="submit"
+                                th:disabled="${usuario.nombre == #authentication.name}">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="vacio" th:if="${#lists.isEmpty(usuarios)}">
+        Todavia no hay usuarios registrados.
+    </p>
+</main>
+</body>
+</html>
