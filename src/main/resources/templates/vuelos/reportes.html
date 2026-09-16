@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/comunes :: cabecera('Reportes de vuelos')}"></head>
+<body>
+<header th:replace="~{fragments/comunes :: banda('reportes-vuelo')}"></header>
+
+<main class="contenido">
+    <h1>Reportes de vuelos</h1>
+    <p class="subtitulo">Consultas parametrizadas sobre los vuelos registrados.</p>
+
+    <!-- REPORTE 1: aerolinea + rango de fechas de salida -->
+    <div class="panel-consulta">
+        <h2>Por aerolinea y fechas de salida</h2>
+        <form th:action="@{/vuelos/reportes}" method="get">
+            <input type="hidden" name="reporte" value="aerolinea">
+            <div class="fila-filtros">
+                <div class="campo">
+                    <label for="aerolinea">Aerolinea</label>
+                    <input type="text" id="aerolinea" name="aerolinea" th:value="${aerolinea}"
+                           list="listaAerolineas" placeholder="Todas">
+                    <datalist id="listaAerolineas">
+                        <option th:each="a : ${aerolineasDisponibles}" th:value="${a}"></option>
+                    </datalist>
+                </div>
+                <div class="campo">
+                    <label for="desde">Salida desde</label>
+                    <input type="datetime-local" id="desde" name="desde" th:value="${desde}">
+                </div>
+                <div class="campo">
+                    <label for="hasta">Salida hasta</label>
+                    <input type="datetime-local" id="hasta" name="hasta" th:value="${hasta}">
+                </div>
+                <div class="campo">
+                    <button class="boton" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- REPORTE 2: estado + rango de valor -->
+    <div class="panel-consulta">
+        <h2>Por estado y rango de valor</h2>
+        <form th:action="@{/vuelos/reportes}" method="get">
+            <input type="hidden" name="reporte" value="estado">
+            <div class="fila-filtros">
+                <div class="campo">
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado">
+                        <option value="">Todos</option>
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}"
+                                th:selected="${e == estadoSeleccionado}">Estado</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="valorMinimo">Valor minimo</label>
+                    <input type="number" step="0.01" id="valorMinimo" name="valorMinimo" th:value="${valorMinimo}" placeholder="0">
+                </div>
+                <div class="campo">
+                    <label for="valorMaximo">Valor maximo</label>
+                    <input type="number" step="0.01" id="valorMaximo" name="valorMaximo" th:value="${valorMaximo}" placeholder="Sin limite">
+                </div>
+                <div class="campo">
+                    <button class="boton" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- REPORTE 3: ruta -->
+    <div class="panel-consulta">
+        <h2>Por ruta</h2>
+        <form th:action="@{/vuelos/reportes}" method="get">
+            <input type="hidden" name="reporte" value="ruta">
+            <div class="fila-filtros">
+                <div class="campo">
+                    <label for="origen">Aeropuerto de salida</label>
+                    <input type="text" id="origen" name="origen" th:value="${origen}" placeholder="Ej: Bogota">
+                </div>
+                <div class="campo">
+                    <label for="destino">Aeropuerto de llegada</label>
+                    <input type="text" id="destino" name="destino" th:value="${destino}" placeholder="Ej: Cartagena">
+                </div>
+                <div class="campo">
+                    <button class="boton" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div th:if="${reporte != null}">
+        <h2>Resultados</h2>
+        <div class="tabla-marco" th:if="${not #lists.isEmpty(resultados)}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Vuelo</th>
+                    <th>Aerolinea</th>
+                    <th>Ruta</th>
+                    <th>Salida</th>
+                    <th class="valor">Valor</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="vuelo : ${resultados}">
+                    <td class="dato numero-vuelo" th:text="${vuelo.numero}">AV0000</td>
+                    <td th:text="${vuelo.aerolinea}">Aerolinea</td>
+                    <td class="dato" th:text="${vuelo.ruta}">Ruta</td>
+                    <td class="dato" th:text="${#temporals.format(vuelo.fechaSalida, 'dd/MM/yyyy HH:mm')}">Fecha</td>
+                    <td class="dato valor" th:text="'$ ' + ${#numbers.formatDecimal(vuelo.valor, 0, 'POINT', 0, 'COMMA')}">$ 0</td>
+                    <td><span class="estado" th:classappend="'estado-' + ${vuelo.estado}" th:text="${vuelo.estado.etiqueta}">Estado</span></td>
+                    <td><a class="boton pequeno secundario" th:href="@{/vuelos/{id}(id=${vuelo.id})}">Ver</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="total-reporte" th:if="${not #lists.isEmpty(resultados)}">
+            <strong th:text="${#lists.size(resultados)}">0</strong> vuelo(s) encontrado(s) ·
+            Total: <strong th:text="'$ ' + ${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}">$ 0</strong>
+        </p>
+        <p class="vacio" th:if="${#lists.isEmpty(resultados)}">
+            No se encontraron vuelos con esos filtros.
+        </p>
+    </div>
+</main>
+</body>
+</html>
