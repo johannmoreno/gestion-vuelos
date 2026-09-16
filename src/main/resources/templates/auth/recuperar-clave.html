@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/comunes :: cabecera('Recuperar clave')}"></head>
+<body>
+
+<main class="pantalla-acceso">
+    <div class="tarjeta-acceso">
+        <h1>Recuperar clave</h1>
+        <p class="subtitulo" style="margin-bottom:24px">
+            Escribe el correo con el que te registraste. Si existe en el sistema, te enviaremos un enlace para crear una clave nueva.
+        </p>
+
+        <p class="aviso ok" th:if="${mensajeOk}" th:text="${mensajeOk}"></p>
+        <p class="aviso error" th:if="${mensajeError}" th:text="${mensajeError}"></p>
+
+        <form th:action="@{/recuperar-clave}" method="post">
+            <div class="campo">
+                <label for="email">Correo electronico</label>
+                <input type="email" id="email" name="email" required autofocus>
+            </div>
+            <button class="boton" type="submit">Enviar enlace</button>
+        </form>
+
+        <div class="enlaces-acceso">
+            <a th:href="@{/login}">Volver a iniciar sesion</a>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

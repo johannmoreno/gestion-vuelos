@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/comunes :: cabecera('Restablecer clave')}"></head>
+<body>
+
+<main class="pantalla-acceso">
+    <div class="tarjeta-acceso">
+        <h1>Crear clave nueva</h1>
+        <p class="subtitulo" style="margin-bottom:24px">Escribe tu nueva clave. Debe tener al menos 8 caracteres.</p>
+
+        <p class="aviso error" th:if="${mensajeError}" th:text="${mensajeError}"></p>
+
+        <form th:action="@{/restablecer-clave}" method="post">
+            <input type="hidden" name="token" th:value="${token}">
+            <div class="campo">
+                <label for="clave">Clave nueva</label>
+                <input type="password" id="clave" name="clave" minlength="8" required autofocus>
+            </div>
+            <div class="campo">
+                <label for="confirmacion">Confirmar clave</label>
+                <input type="password" id="confirmacion" name="confirmacion" minlength="8" required>
+            </div>
+            <button class="boton" type="submit">Actualizar clave</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

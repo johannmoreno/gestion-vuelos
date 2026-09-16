@@ -27,8 +27,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:tu_correo@gmail.com}
-    password: ${MAIL_PASSWORD:tu_clave_de_aplicacion}
+    username: ${MAIL_USERNAME:jdmoreno159@gmail.com}
+    password: ${MAIL_PASSWORD:hkguasumezizwbdb}
     properties:
       mail:
         smtp:
@@ -38,9 +38,9 @@ spring:
 
 app:
   mail:
-    remitente: ${MAIL_USERNAME:tu_correo@gmail.com}
-    habilitado: false
+    remitente: ${MAIL_USERNAME:jdmoreno159@gmail.com}
+    habilitado: true
   admin:
     nombre: admin
     clave: Admin12345
-    email: admin@gestionvuelos.com
+    email: jdmoreno159@gmail.com
