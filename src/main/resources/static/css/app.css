@@ -1,0 +1,237 @@
+/* Gestion de Vuelos - hoja de estilos propia.
+   Referencia visual: tableros de informacion de aeropuerto (fondo pizarra,
+   datos en tipografia condensada, ambar para la informacion operativa). */
+
+:root {
+    --pizarra: #0E1A24;
+    --pizarra-clara: #16293a;
+    --papel: #F3F5F4;
+    --tinta: #1B2A33;
+    --tinta-suave: #5A6B75;
+    --ambar: #E3A02F;
+    --turquesa: #2E7F8C;
+    --alerta: #B8423A;
+    --verde: #2F7D53;
+    --linea: #D7DEDD;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--papel);
+    color: var(--tinta);
+    font-family: "Barlow", "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+a { color: var(--turquesa); }
+
+/* --- Banda superior --- */
+.banda {
+    background: var(--pizarra);
+    color: #EAF1F2;
+    padding: 0 24px;
+}
+
+.banda-interior {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 28px;
+    min-height: 66px;
+}
+
+.marca {
+    font-family: "Barlow Semi Condensed", "Barlow", sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--ambar);
+    text-decoration: none;
+}
+
+.marca span { color: #EAF1F2; font-weight: 400; }
+
+.banda nav { display: flex; gap: 22px; flex: 1; flex-wrap: wrap; }
+
+.banda nav a {
+    color: #C3D2D6;
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+}
+
+.banda nav a:hover,
+.banda nav a.activo { color: #fff; border-bottom-color: var(--ambar); }
+
+.sesion { display: flex; align-items: center; gap: 14px; font-size: 14px; color: #9FB3B9; }
+
+/* --- Contenido --- */
+.contenido { max-width: 1140px; margin: 0 auto; padding: 34px 24px 64px; }
+
+h1 {
+    font-family: "Barlow Semi Condensed", "Barlow", sans-serif;
+    font-size: 34px;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+h2 { font-size: 21px; font-weight: 600; margin: 34px 0 12px; }
+
+.subtitulo { color: var(--tinta-suave); margin: 0 0 26px; max-width: 62ch; }
+
+.encabezado-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+/* --- Mensajes --- */
+.aviso {
+    padding: 12px 16px;
+    border-left: 4px solid var(--turquesa);
+    background: #fff;
+    margin-bottom: 20px;
+}
+
+.aviso.ok { border-left-color: var(--verde); }
+.aviso.error { border-left-color: var(--alerta); }
+
+/* --- Tablas --- */
+.tabla-marco { background: #fff; border: 1px solid var(--linea); overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+    background: var(--pizarra-clara);
+    color: #D8E3E5;
+    font-family: "Barlow Semi Condensed", sans-serif;
+    font-weight: 500;
+    text-align: left;
+    padding: 10px 14px;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+tbody td { padding: 11px 14px; border-top: 1px solid var(--linea); vertical-align: middle; }
+tbody tr:hover { background: #F7FAFA; }
+
+.dato {
+    font-family: "Barlow Semi Condensed", monospace;
+    letter-spacing: .03em;
+}
+
+.numero-vuelo { font-weight: 600; color: var(--pizarra); }
+.valor { text-align: right; white-space: nowrap; }
+
+.vacio { padding: 34px 16px; text-align: center; color: var(--tinta-suave); background: #fff; border: 1px solid var(--linea); }
+
+/* --- Estados --- */
+.estado {
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 13px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+}
+
+.estado-PROGRAMADO { color: var(--turquesa); }
+.estado-ABORDANDO { color: #8A6A16; background: #FDF3DE; }
+.estado-EN_VUELO { color: #1B5E8A; }
+.estado-ATERRIZADO { color: var(--verde); }
+.estado-RETRASADO { color: #9A6412; }
+.estado-CANCELADO { color: var(--alerta); }
+
+/* --- Botones --- */
+.boton {
+    display: inline-block;
+    border: 1px solid var(--pizarra);
+    background: var(--pizarra);
+    color: #fff;
+    padding: 9px 18px;
+    font-size: 15px;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton:hover { background: var(--pizarra-clara); }
+.boton.secundario { background: transparent; color: var(--pizarra); }
+.boton.secundario:hover { background: #E6ECEB; }
+.boton.peligro { background: transparent; border-color: var(--alerta); color: var(--alerta); }
+.boton.peligro:hover { background: var(--alerta); color: #fff; }
+.boton.pequeno { padding: 5px 11px; font-size: 14px; }
+
+.acciones { display: flex; gap: 8px; white-space: nowrap; }
+.acciones form { display: inline; }
+
+/* --- Formularios --- */
+.formulario { background: #fff; border: 1px solid var(--linea); padding: 26px; max-width: 860px; }
+
+.rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; }
+.rejilla.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.campo.ancho { grid-column: 1 / -1; }
+
+.campo label { display: block; font-size: 14px; color: var(--tinta-suave); margin-bottom: 5px; }
+
+input[type=text], input[type=email], input[type=password], input[type=number],
+input[type=date], input[type=datetime-local], select, textarea {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #BCC7C6;
+    background: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--tinta);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--turquesa);
+    outline-offset: 1px;
+    border-color: var(--turquesa);
+}
+
+.error-campo { color: var(--alerta); font-size: 13px; margin-top: 4px; display: block; }
+.pie-formulario { display: flex; gap: 12px; margin-top: 26px; }
+.ayuda { font-size: 13px; color: var(--tinta-suave); }
+
+/* --- Tablero de inicio --- */
+.indicadores { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--linea); border: 1px solid var(--linea); margin-bottom: 30px; }
+.indicador { background: #fff; padding: 20px 22px; }
+.indicador .cifra { font-family: "Barlow Semi Condensed", sans-serif; font-size: 34px; font-weight: 600; line-height: 1.1; }
+.indicador .rotulo { color: var(--tinta-suave); font-size: 14px; }
+
+/* --- Reportes --- */
+.panel-consulta { background: #fff; border: 1px solid var(--linea); padding: 22px; margin-bottom: 24px; }
+.panel-consulta h2 { margin-top: 0; }
+.fila-filtros { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; align-items: end; }
+.total-reporte { text-align: right; padding: 12px 14px; background: #fff; border: 1px solid var(--linea); border-top: none; font-family: "Barlow Semi Condensed", sans-serif; }
+
+/* --- Acceso (login y claves) --- */
+.pantalla-acceso { min-height: 100vh; display: grid; place-items: center; background: var(--pizarra); padding: 24px; }
+.tarjeta-acceso { background: #fff; width: 100%; max-width: 420px; padding: 36px 34px; }
+.tarjeta-acceso h1 { font-size: 27px; }
+.tarjeta-acceso .campo { margin-bottom: 16px; }
+.tarjeta-acceso .boton { width: 100%; text-align: center; }
+.enlaces-acceso { margin-top: 18px; font-size: 14px; display: flex; justify-content: space-between; }
+.credenciales-demo { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--linea); font-size: 13px; color: var(--tinta-suave); }
+
+/* --- Detalle --- */
+.ficha { background: #fff; border: 1px solid var(--linea); }
+.ficha dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: var(--linea); }
+.ficha .celda { background: #fff; padding: 16px 20px; }
+.ficha dt { color: var(--tinta-suave); font-size: 13px; margin-bottom: 3px; }
+.ficha dd { margin: 0; font-size: 17px; }
+
+@media (max-width: 720px) {
+    .rejilla, .rejilla.tres { grid-template-columns: 1fr; }
+    .banda-interior { padding: 12px 0; }
+    h1 { font-size: 28px; }
+}

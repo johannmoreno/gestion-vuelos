@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/comunes :: cabecera(${modoEdicion} ? 'Editar vuelo' : 'Registrar vuelo')}"></head>
+<body>
+<header th:replace="~{fragments/comunes :: banda('vuelos')}"></header>
+
+<main class="contenido">
+    <h1 th:text="${modoEdicion} ? 'Editar vuelo' : 'Registrar vuelo'">Registrar vuelo</h1>
+    <p class="subtitulo">Completa los datos del vuelo. Todos los campos son obligatorios.</p>
+
+    <p class="aviso error" th:if="${mensajeError}" th:text="${mensajeError}"></p>
+
+    <form class="formulario" th:action="@{/vuelos/guardar}" th:object="${vuelo}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="rejilla">
+            <div class="campo">
+                <label for="numero">Numero de vuelo</label>
+                <input type="text" id="numero" th:field="*{numero}" placeholder="AV9412">
+                <span class="error-campo" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="aerolinea">Aerolinea</label>
+                <input type="text" id="aerolinea" th:field="*{aerolinea}" placeholder="Avianca">
+                <span class="error-campo" th:if="${#fields.hasErrors('aerolinea')}" th:errors="*{aerolinea}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="agenciaViajes">Agencia de viajes</label>
+                <input type="text" id="agenciaViajes" th:field="*{agenciaViajes}" placeholder="Despegar (opcional)">
+                <span class="error-campo" th:if="${#fields.hasErrors('agenciaViajes')}" th:errors="*{agenciaViajes}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="estado">Estado</label>
+                <select id="estado" th:field="*{estado}">
+                    <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}">Estado</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="fechaCompra">Fecha de compra</label>
+                <input type="date" id="fechaCompra" th:field="*{fechaCompra}">
+                <span class="error-campo" th:if="${#fields.hasErrors('fechaCompra')}" th:errors="*{fechaCompra}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="valor">Valor del tiquete (COP)</label>
+                <input type="number" step="0.01" min="0" id="valor" th:field="*{valor}" placeholder="480000">
+                <span class="error-campo" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="fechaSalida">Fecha y hora de salida</label>
+                <input type="datetime-local" id="fechaSalida" th:field="*{fechaSalida}">
+                <span class="error-campo" th:if="${#fields.hasErrors('fechaSalida')}" th:errors="*{fechaSalida}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="fechaLlegada">Fecha y hora de llegada</label>
+                <input type="datetime-local" id="fechaLlegada" th:field="*{fechaLlegada}">
+                <span class="error-campo" th:if="${#fields.hasErrors('fechaLlegada')}" th:errors="*{fechaLlegada}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="aeropuertoSalida">Aeropuerto de salida</label>
+                <input type="text" id="aeropuertoSalida" th:field="*{aeropuertoSalida}" placeholder="Rafael Nunez (CTG)">
+                <span class="error-campo" th:if="${#fields.hasErrors('aeropuertoSalida')}" th:errors="*{aeropuertoSalida}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="aeropuertoLlegada">Aeropuerto de llegada</label>
+                <input type="text" id="aeropuertoLlegada" th:field="*{aeropuertoLlegada}" placeholder="El Dorado (BOG)">
+                <span class="error-campo" th:if="${#fields.hasErrors('aeropuertoLlegada')}" th:errors="*{aeropuertoLlegada}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="avion">Avion</label>
+                <input type="text" id="avion" th:field="*{avion}" placeholder="Airbus A320">
+                <span class="error-campo" th:if="${#fields.hasErrors('avion')}" th:errors="*{avion}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="puesto">Puesto</label>
+                <input type="text" id="puesto" th:field="*{puesto}" placeholder="14C">
+                <span class="error-campo" th:if="${#fields.hasErrors('puesto')}" th:errors="*{puesto}"></span>
+            </div>
+
+            <div class="campo">
+                <label for="piloto">Piloto</label>
+                <input type="text" id="piloto" th:field="*{piloto}" placeholder="Cap. Andres Mejia">
+                <span class="error-campo" th:if="${#fields.hasErrors('piloto')}" th:errors="*{piloto}"></span>
+            </div>
+
+            <div class="campo ancho">
+                <label for="cliente">Cliente</label>
+                <input type="text" id="cliente" th:field="*{cliente}" placeholder="Laura Restrepo">
+                <span class="error-campo" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></span>
+            </div>
+        </div>
+
+        <div class="pie-formulario">
+            <button class="boton" type="submit">Guardar</button>
+            <a class="boton secundario" th:href="@{/vuelos}">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

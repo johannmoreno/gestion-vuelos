@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="cabecera(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' | Gestion de Vuelos'">Gestion de Vuelos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<header class="banda" th:fragment="banda(seccion)">
+    <div class="banda-interior">
+        <a class="marca" th:href="@{/}">Vuelos<span>.ops</span></a>
+        <nav>
+            <a th:href="@{/}" th:classappend="${seccion == 'inicio'} ? 'activo'">Tablero</a>
+            <a th:href="@{/vuelos}" th:classappend="${seccion == 'vuelos'} ? 'activo'">Vuelos</a>
+            <a th:href="@{/vuelos/reportes}" th:classappend="${seccion == 'reportes-vuelo'} ? 'activo'">Reportes de vuelos</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/usuarios}"
+               th:classappend="${seccion == 'usuarios'} ? 'activo'">Usuarios</a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/usuarios/reportes}"
+               th:classappend="${seccion == 'reportes-usuario'} ? 'activo'">Reportes de usuarios</a>
+        </nav>
+        <div class="sesion">
+            <span sec:authentication="name">usuario</span>
+            <form th:action="@{/logout}" method="post">
+                <button class="boton pequeno secundario" type="submit" style="color:#EAF1F2;border-color:#4A6473">Cerrar sesion</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<div th:fragment="mensajes">
+    <p class="aviso ok" th:if="${mensajeOk}" th:text="${mensajeOk}"></p>
+    <p class="aviso error" th:if="${mensajeError}" th:text="${mensajeError}"></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/comunes :: cabecera('Detalle del vuelo')}"></head>
+<body>
+<header th:replace="~{fragments/comunes :: banda('vuelos')}"></header>
+
+<main class="contenido">
+    <div class="encabezado-seccion">
+        <div>
+            <h1 th:text="${vuelo.numero}">AV0000</h1>
+            <p class="subtitulo" th:text="${vuelo.aerolinea} + ' · ' + ${vuelo.ruta}">Aerolinea · Ruta</p>
+        </div>
+        <div class="acciones">
+            <a class="boton secundario" th:href="@{/vuelos/{id}/editar(id=${vuelo.id})}">Editar</a>
+            <a class="boton secundario" th:href="@{/vuelos}">Volver al listado</a>
+        </div>
+    </div>
+
+    <div class="ficha">
+        <dl>
+            <div class="celda">
+                <dt>Estado</dt>
+                <dd><span class="estado" th:classappend="'estado-' + ${vuelo.estado}" th:text="${vuelo.estado.etiqueta}">Estado</span></dd>
+            </div>
+            <div class="celda">
+                <dt>Cliente</dt>
+                <dd th:text="${vuelo.cliente}">Cliente</dd>
+            </div>
+            <div class="celda">
+                <dt>Puesto</dt>
+                <dd th:text="${vuelo.puesto}">14C</dd>
+            </div>
+            <div class="celda">
+                <dt>Valor del tiquete</dt>
+                <dd th:text="'$ ' + ${#numbers.formatDecimal(vuelo.valor, 0, 'POINT', 0, 'COMMA')}">$ 0</dd>
+            </div>
+            <div class="celda">
+                <dt>Fecha de compra</dt>
+                <dd th:text="${#temporals.format(vuelo.fechaCompra, 'dd/MM/yyyy')}">Fecha</dd>
+            </div>
+            <div class="celda">
+                <dt>Salida</dt>
+                <dd th:text="${#temporals.format(vuelo.fechaSalida, 'dd/MM/yyyy HH:mm')} + ' · ' + ${vuelo.aeropuertoSalida}">Fecha</dd>
+            </div>
+            <div class="celda">
+                <dt>Llegada</dt>
+                <dd th:text="${#temporals.format(vuelo.fechaLlegada, 'dd/MM/yyyy HH:mm')} + ' · ' + ${vuelo.aeropuertoLlegada}">Fecha</dd>
+            </div>
+            <div class="celda">
+                <dt>Duracion estimada</dt>
+                <dd th:text="${vuelo.duracionMinutos} + ' minutos'">0 minutos</dd>
+            </div>
+            <div class="celda">
+                <dt>Avion</dt>
+                <dd th:text="${vuelo.avion}">Avion</dd>
+            </div>
+            <div class="celda">
+                <dt>Piloto</dt>
+                <dd th:text="${vuelo.piloto}">Piloto</dd>
+            </div>
+            <div class="celda" th:if="${vuelo.agenciaViajes}">
+                <dt>Agencia de viajes</dt>
+                <dd th:text="${vuelo.agenciaViajes}">Agencia</dd>
+            </div>
+        </dl>
+    </div>
+</main>
+</body>
+</html>

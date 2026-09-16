@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/comunes :: cabecera('Iniciar sesion')}"></head>
+<body>
+
+<main class="pantalla-acceso">
+    <div class="tarjeta-acceso">
+        <h1>Vuelos<span style="color:#E3A02F">.ops</span></h1>
+        <p class="subtitulo" style="margin-bottom:24px">Inicia sesion para administrar los vuelos.</p>
+
+        <p class="aviso ok" th:if="${mensajeOk}" th:text="${mensajeOk}"></p>
+        <p class="aviso error" th:if="${mensajeError}" th:text="${mensajeError}"></p>
+
+        <form th:action="@{/login}" method="post">
+            <div class="campo">
+                <label for="nombre">Usuario</label>
+                <input type="text" id="nombre" name="nombre" required autofocus>
+            </div>
+            <div class="campo">
+                <label for="clave">Clave</label>
+                <input type="password" id="clave" name="clave" required>
+            </div>
+            <button class="boton" type="submit">Ingresar</button>
+        </form>
+
+        <div class="enlaces-acceso">
+            <a th:href="@{/recuperar-clave}">Olvide mi clave</a>
+        </div>
+
+        <div class="credenciales-demo">
+            <strong>Usuarios de prueba (datos iniciales):</strong><br>
+            Admin &nbsp;→&nbsp; usuario: <code>admin</code> · clave: <code>Admin12345</code><br>
+            Operador &nbsp;→&nbsp; usuario: <code>operador</code> · clave: <code>Operador123</code>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
