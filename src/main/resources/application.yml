@@ -42,5 +42,5 @@ app:
     habilitado: true
   admin:
     nombre: admin
-    clave: ${APP_ADMIN_CLAVE:Admin12345}
+    clave: ${APP_ADMIN_CLAVE:******}
     email: ${APP_ADMIN_EMAIL:jdmoreno159@gmail.com}
