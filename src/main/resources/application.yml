@@ -1,14 +1,14 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: gestion-vuelos
 
   datasource:
-    url: jdbc:mysql://localhost:3306/gestion_vuelos?useSSL=false&serverTimezone=America/Bogota&allowPublicKeyRetrieval=true
-    username: root
-    password:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/gestion_vuelos?useSSL=false&serverTimezone=America/Bogota&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -28,7 +28,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: ${MAIL_USERNAME:jdmoreno159@gmail.com}
-    password: ${MAIL_PASSWORD:hkguasumezizwbdb}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -42,5 +42,5 @@ app:
     habilitado: true
   admin:
     nombre: admin
-    clave: Admin12345
-    email: jdmoreno159@gmail.com
+    clave: ${APP_ADMIN_CLAVE:Admin12345}
+    email: ${APP_ADMIN_EMAIL:jdmoreno159@gmail.com}

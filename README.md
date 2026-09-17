@@ -141,9 +141,9 @@ gestion-vuelos/
 
 ## Despliegue
 
-La aplicación está desplegada y disponible públicamente en:
+La aplicación está desplegada y disponible públicamente en Railway:
 
-> _Enlace pendiente — se agrega en el paso de despliegue._
+**https://gestion-vuelos-production.up.railway.app**
 
 ## Autor
 
