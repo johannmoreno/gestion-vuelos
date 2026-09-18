@@ -24,25 +24,13 @@ spring:
   thymeleaf:
     cache: false
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_USERNAME:jdmoreno159@gmail.com}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          connectiontimeout: 8000
-          timeout: 8000
-          writetimeout: 8000
-
 app:
   mail:
     remitente: ${MAIL_USERNAME:jdmoreno159@gmail.com}
+    remitente-nombre: "Gestion de Vuelos"
     habilitado: true
+    brevo:
+      api-key: ${BREVO_API_KEY:}
   admin:
     nombre: admin
     clave: ${APP_ADMIN_CLAVE:******}

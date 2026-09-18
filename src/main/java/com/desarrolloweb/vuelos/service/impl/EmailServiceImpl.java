@@ -4,31 +4,42 @@ import com.desarrolloweb.vuelos.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * Envio de correo mediante JavaMailSender (SMTP).
- * Se ejecuta en un hilo aparte (@Async) para que el envio (o un eventual
- * timeout/fallo de conexion SMTP) nunca bloquee la respuesta HTTP al usuario.
+ * Envio de correo mediante la API HTTP de Brevo (antes Sendinblue).
+ * Se usa HTTP en vez de SMTP porque algunas plataformas de despliegue
+ * (como Railway) bloquean las conexiones salientes por el puerto SMTP,
+ * mientras que HTTPS (puerto 443) si esta disponible.
+ * Se ejecuta en un hilo aparte (@Async) para no bloquear la respuesta HTTP.
  */
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
+    private static final String BREVO_URL = "https://api.brevo.com/v3/smtp/email";
 
-    private final JavaMailSender mailSender;
+    private final RestClient restClient;
 
     @Value("${app.mail.remitente:no-reply@gestionvuelos.com}")
     private String remitente;
 
+    @Value("${app.mail.remitente-nombre:Gestion de Vuelos}")
+    private String remitenteNombre;
+
     @Value("${app.mail.habilitado:true}")
     private boolean habilitado;
 
-    public EmailServiceImpl(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    @Value("${app.mail.brevo.api-key:}")
+    private String brevoApiKey;
+
+    public EmailServiceImpl() {
+        this.restClient = RestClient.create();
     }
 
     @Override
@@ -51,16 +62,31 @@ public class EmailServiceImpl implements EmailService {
             return;
         }
 
+        if (brevoApiKey == null || brevoApiKey.isBlank()) {
+            log.error("BREVO_API_KEY no configurada. Enlace de recuperacion para {}: {}", destinatario, enlace);
+            return;
+        }
+
+        Map<String, Object> body = Map.of(
+                "sender", Map.of("name", remitenteNombre, "email", remitente),
+                "to", List.of(Map.of("email", destinatario, "name", nombreUsuario)),
+                "subject", "Restablece tu clave - Gestion de Vuelos",
+                "textContent", cuerpo
+        );
+
         try {
-            SimpleMailMessage mensaje = new SimpleMailMessage();
-            mensaje.setFrom(remitente);
-            mensaje.setTo(destinatario);
-            mensaje.setSubject("Restablece tu clave - Gestion de Vuelos");
-            mensaje.setText(cuerpo);
-            mailSender.send(mensaje);
-            log.info("Correo de recuperacion enviado a {}", destinatario);
+            restClient.post()
+                    .uri(BREVO_URL)
+                    .header("api-key", brevoApiKey)
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .body(body)
+                    .retrieve()
+                    .toBodilessEntity();
+            log.info("Correo de recuperacion enviado a {} via Brevo", destinatario);
         } catch (Exception ex) {
-            log.error("No fue posible enviar el correo a {}. Enlace generado: {}", destinatario, enlace, ex);
+            log.error("No fue posible enviar el correo a {} via Brevo. Enlace generado: {}",
+                    destinatario, enlace, ex);
         }
     }
 }
