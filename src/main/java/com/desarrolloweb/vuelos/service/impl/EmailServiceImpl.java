@@ -6,12 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
  * Envio de correo mediante JavaMailSender (SMTP).
- * Si el envio esta deshabilitado (app.mail.habilitado=false), el enlace
- * se escribe en el log para no bloquear las pruebas locales.
+ * Se ejecuta en un hilo aparte (@Async) para que el envio (o un eventual
+ * timeout/fallo de conexion SMTP) nunca bloquee la respuesta HTTP al usuario.
  */
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -31,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @Async
     public void enviarEnlaceRecuperacion(String destinatario, String nombreUsuario, String enlace) {
         String cuerpo = """
                 Hola %s,
