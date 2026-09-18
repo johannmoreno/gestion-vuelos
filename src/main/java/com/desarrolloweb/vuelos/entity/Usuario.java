@@ -28,7 +28,7 @@ public class Usuario {
     @Column(nullable = false, length = 60)
     private String nombre;
 
-    @NotBlank(message = "La clave es obligatoria")
+
     @Column(nullable = false, length = 120)
     private String clave;
 
